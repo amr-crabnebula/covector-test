@@ -39,9 +39,8 @@ jobs:
           result-encoding: string
           script: |
             const output = `${{ toJSON(steps.covector.outputs) }}`;
-            const json = JSON.parse(output);
-            const id = json["-org-dashed-pkg-releaseId"];
-            return id
+            const [_, id] = /"-org-dashed-pkg-releaseId": "([0-9]+)"/g.exec(output);
+            return id;
 
       - name: Get result
         run: echo "${{steps.set-result.outputs.result}}"
