@@ -2,7 +2,7 @@
   "gitSiteUrl": "https://github.com/amr-crabnebula/covector-test",
   "timeout": 3600000,
   "pkgManagers": {
-    "rust": {
+    "javascript": {
       "version": true,
       "getPublishedVersion": "0.1.0",
       "prepublish": [],
@@ -13,7 +13,7 @@
   "packages": {
     "@org-dashed/pkg": {
       "path": ".",
-      "manager": "rust"
+      "manager": "javascript"
     }
   }
 }
