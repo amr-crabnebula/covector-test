@@ -1,0 +1,47 @@
+# Copyright 2022-2022 Tauri Programme within The Commons Conservancy
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+
+name: covector version or publish
+
+on:
+  push:
+
+jobs:
+  version-or-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    outputs:
+      change: ${{ steps.covector.outputs.change }}
+      commandRan: ${{ steps.covector.outputs.commandRan }}
+      successfulPublish: ${{ steps.covector.outputs.successfulPublish }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: cargo login
+        run: cargo login ${{ secrets.ORG_CRATES_IO_TOKEN  }}
+
+      - name: git config
+        run: |
+          git config --global user.name "${{ github.event.pusher.name }}"
+          git config --global user.email "${{ github.event.pusher.email }}"
+
+      - name: covector version or publish (publish when no change files present)
+        uses: jbolda/covector/packages/action@covector-v0
+        id: covector
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.ORG_NPM_TOKEN }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          command: "publish"
+          createRelease: true
+
+      - name: Process covector output
+        id: covectorOutput
+        if: |
+          steps.covector.outputs.successfulPublish == 'true' &&
+          contains(steps.covector.outputs.packagesPublished, '@org-dashed/pkg')
+        run: |
+          id=$(node parse-output.js '${{ toJSON(steps.covector.outputs) }}' "-org-dashed-pkg-releaseId")
+          echo "cliReleaseId=$id" >> "$GITHUB_OUTPUT"
