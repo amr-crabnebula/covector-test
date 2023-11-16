@@ -39,5 +39,7 @@ jobs:
           steps.covector.outputs.successfulPublish == 'true' &&
           contains(steps.covector.outputs.packagesPublished, '@org-dashed/pkg')
         run: |
-          id=$(cat << EOF${{ toJSON(steps.covector.outputs) }}EOF | jq '.["-org-dashed-pkg-releaseId"]')
+          id=$(cat << EOF
+          ${{ toJSON(steps.covector.outputs) }}
+          EOF | jq '.["-org-dashed-pkg-releaseId"]')
           echo "cliReleaseId=$id" >> "$GITHUB_OUTPUT"
