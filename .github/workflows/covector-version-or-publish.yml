@@ -33,13 +33,15 @@ jobs:
           command: "publish"
           createRelease: true
 
-      - name: Process covector output
-        id: covectorOutput
-        if: |
-          steps.covector.outputs.successfulPublish == 'true' &&
-          contains(steps.covector.outputs.packagesPublished, '@org-dashed/pkg')
-        run: |
-          id=$(cat << EOF
-          ${{ toJSON(steps.covector.outputs) }}
-          EOF | jq '.["-org-dashed-pkg-releaseId"]')
-          echo "cliReleaseId=$id" >> "$GITHUB_OUTPUT"
+      - uses: actions/github-script@v6
+        id: set-result
+        with:
+          result-encoding: string
+          script: |
+            const output = `${{ toJSON(steps.covector.outputs) }}`;
+            const json = JSON.parse(json);
+            const id = json["-org-dashed-pkg-releaseId"];
+            return id
+
+      - name: Get result
+        run: echo "${{steps.set-result.outputs.result}}"
