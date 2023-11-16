@@ -39,7 +39,7 @@ jobs:
           result-encoding: string
           script: |
             const output = `${{ toJSON(steps.covector.outputs) }}`;
-            const json = JSON.parse(json);
+            const json = JSON.parse(output);
             const id = json["-org-dashed-pkg-releaseId"];
             return id
 
