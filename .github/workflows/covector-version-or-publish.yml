@@ -33,14 +33,5 @@ jobs:
           command: "publish"
           createRelease: true
 
-      - uses: actions/github-script@v6
-        id: set-result
-        with:
-          result-encoding: string
-          script: |
-            const output = `${{ toJSON(steps.covector.outputs) }}`;
-            const [_, id] = /"-org-dashed-pkg-releaseId": "([0-9]+)"/g.exec(output);
-            return id;
-
       - name: Get result
-        run: echo "${{steps.set-result.outputs.result}}"
+        run: echo "${{steps.covector.outputs['-org-dashed-pkg-releaseId']}}"
