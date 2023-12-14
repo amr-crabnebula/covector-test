@@ -34,4 +34,4 @@ jobs:
           createRelease: true
 
       - name: Get result
-        run: "{\"releaseId\": \"${{ steps.covector.outputs['-crabnebula-updater-releaseId'] }}\" }"
+        run: "{\"releaseId\": \"${{ steps.covector.outputs['-dashed-org-pkg-releaseId'] }}\" }"
