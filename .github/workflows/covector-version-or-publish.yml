@@ -39,4 +39,4 @@ jobs:
         with:
           event-type: publish-pkg
           client-payload: >-
-            "{\"releaseId\": \"${{ steps.covector.outputs['-org-dashed-pkg-releaseId'] }}\" }"
+            '{"releaseId": "${{ steps.covector.outputs['-org-dashed-releaseId'] }}" }'
