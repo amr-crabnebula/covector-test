@@ -34,4 +34,4 @@ jobs:
           createRelease: true
 
       - name: Get result
-        run: echo '"${{ steps.covector.outputs['-org-dashed-pkg-releaseId'] }}"'
+        run: echo '{"releaseId": "${{ steps.covector.outputs[''-org-dashed-releaseId''] }}" }'
